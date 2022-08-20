@@ -2,9 +2,9 @@
 
 namespace Dinhdjj\FilamentModelStats\Tests;
 
+use Dinhdjj\FilamentModelStats\FilamentModelStatsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Dinhdjj\FilamentModelStats\FilamentModelStatsServiceProvider;
 
 class TestCase extends Orchestra
 {
