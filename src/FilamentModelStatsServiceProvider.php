@@ -15,6 +15,7 @@ class FilamentModelStatsServiceProvider extends PluginServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('filament-model-stats');
+            ->name('filament-model-stats')
+            ->hasTranslations();
     }
 }
