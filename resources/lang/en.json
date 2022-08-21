@@ -1,4 +1,4 @@
 {
-    ":percentage increase": ":percentage increase",
-    ":percentage decrease": ":percentage decrease"
+    ":percentage% increase": ":percentage% increase",
+    ":percentage% decrease": ":percentage% decrease"
 }

@@ -10,9 +10,11 @@ it('generate chart correctly', function (string $method) {
 
     $card = Card::model(Vote::class, now()->subMonth(), now())->$method('score');
 
+    $compareDate = now()->subMonth()->subSeconds(now()->subMonth()->diffInSeconds(now()));
+
     expect($card->getChart())->toBe(
         Trend::model(Vote::class)
-        ->between(now()->subMonth(), now())
+        ->between($compareDate, now())
         ->perDay()
         ->$method('score')
         ->map

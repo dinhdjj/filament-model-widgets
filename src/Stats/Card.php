@@ -151,7 +151,7 @@ class Card
         $per = 'per'.ucfirst($this->chartPeriod);
         $chart = CacheManager::rememberByQuery($this->query, "trend-{$method}-{$per}", $this->secondsToCache, function () use ($method, $column, $per) {
             return Trend::query($this->query)
-            ->between($this->start, $this->end)
+            ->between($this->comparedDate, $this->end)
             ->$per()
             ->$method($column)
             ->map
@@ -174,12 +174,12 @@ class Card
 
             if ($newValue > $oldValue) {
                 $percentageIncrease = $percentage - 100;
-                $card->description(__(':percentage increase', ['percentage' => number_format($percentageIncrease)]))
+                $card->description(__(':percentage% increase', ['percentage' => number_format($percentageIncrease)]))
                     ->descriptionIcon('heroicon-o-trending-up')
                     ->color('success');
             } elseif ($newValue < $oldValue) {
                 $percentageDecrease = 100 - $percentage;
-                $card->description(__(':percentage decrease', ['percentage' => number_format($percentageDecrease)]))
+                $card->description(__(':percentage% decrease', ['percentage' => number_format($percentageDecrease)]))
                     ->descriptionIcon('heroicon-o-trending-down')
                     ->color('danger');
             }
