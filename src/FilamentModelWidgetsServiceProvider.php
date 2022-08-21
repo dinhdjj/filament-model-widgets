@@ -1,11 +1,11 @@
 <?php
 
-namespace Dinhdjj\FilamentModelStats;
+namespace Dinhdjj\FilamentModelWidgets;
 
 use Filament\PluginServiceProvider;
 use Spatie\LaravelPackageTools\Package;
 
-class FilamentModelStatsServiceProvider extends PluginServiceProvider
+class FilamentModelWidgetsServiceProvider extends PluginServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -15,7 +15,7 @@ class FilamentModelStatsServiceProvider extends PluginServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('filament-model-stats')
+            ->name('filament-model-widgets')
             ->hasTranslations();
     }
 }

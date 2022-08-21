@@ -1,8 +1,8 @@
 <?php
 
-namespace Dinhdjj\FilamentModelStats\Tests;
+namespace Dinhdjj\FilamentModelWidgets\Tests;
 
-use Dinhdjj\FilamentModelStats\FilamentModelStatsServiceProvider;
+use Dinhdjj\FilamentModelWidgets\FilamentModelWidgetsServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Dinhdjj\\FilamentModelStats\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Dinhdjj\\FilamentModelWidgets\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            FilamentModelStatsServiceProvider::class,
+            FilamentModelWidgetsServiceProvider::class,
         ];
     }
 
@@ -29,7 +29,7 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
 
         /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-model-stats_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_filament-model-widgets_table.php.stub';
         $migration->up();
         */
     }

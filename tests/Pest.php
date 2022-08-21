@@ -1,5 +1,5 @@
 <?php
 
-use Dinhdjj\FilamentModelStats\Tests\TestCase;
+use Dinhdjj\FilamentModelWidgets\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

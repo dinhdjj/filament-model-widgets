@@ -1,6 +1,6 @@
 <?php
 
-namespace Dinhdjj\FilamentModelStats\Stats;
+namespace Dinhdjj\FilamentModelWidgets\Stats;
 
 use Carbon\Carbon;
 use Filament\Widgets\StatsOverviewWidget\Card as BaseCard;

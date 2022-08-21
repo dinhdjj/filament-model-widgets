@@ -1,12 +1,12 @@
 {
-    "name": "dinhdjj/filament-model-stats",
-    "description": "Package for quickly generating stats of models",
+    "name": "dinhdjj/filament-model-widgets",
+    "description": "Package for quickly generating widgets of models",
     "keywords": [
         "dinhdjj",
         "laravel",
-        "filament-model-stats"
+        "filament-model-widgets"
     ],
-    "homepage": "https://github.com/dinhdjj/filament-model-stats",
+    "homepage": "https://github.com/dinhdjj/filament-model-widgets",
     "license": "MIT",
     "authors": [
         {
@@ -36,13 +36,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Dinhdjj\\FilamentModelStats\\": "src",
-            "Dinhdjj\\FilamentModelStats\\Database\\Factories\\": "database/factories"
+            "Dinhdjj\\FilamentModelWidgets\\": "src",
+            "Dinhdjj\\FilamentModelWidgets\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Dinhdjj\\FilamentModelStats\\Tests\\": "tests"
+            "Dinhdjj\\FilamentModelWidgets\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -61,10 +61,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Dinhdjj\\FilamentModelStats\\FilamentModelStatsServiceProvider"
+                "Dinhdjj\\FilamentModelWidgets\\FilamentModelWidgetsServiceProvider"
             ],
             "aliases": {
-                "FilamentModelStats": "Dinhdjj\\FilamentModelStats\\Facades\\FilamentModelStats"
+                "FilamentModelWidgets": "Dinhdjj\\FilamentModelWidgets\\Facades\\FilamentModelWidgets"
             }
         }
     },
