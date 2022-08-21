@@ -3,7 +3,7 @@
 namespace Dinhdjj\FilamentModelWidgets;
 
 use Closure;
-use Illuminate\Cache\Repository;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
 
