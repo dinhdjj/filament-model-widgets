@@ -28,9 +28,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_filament-model-widgets_table.php.stub';
+        $migration = include __DIR__.'/create_votes_table.php';
         $migration->up();
-        */
     }
 }

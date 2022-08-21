@@ -3,6 +3,7 @@
 namespace Dinhdjj\FilamentModelWidgets\Stats;
 
 use Carbon\Carbon;
+use Dinhdjj\FilamentModelWidgets\Facades\CacheManager;
 use Filament\Widgets\StatsOverviewWidget\Card as BaseCard;
 use Flowframe\Trend\Trend;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,6 +13,8 @@ use ReflectionClass;
 class Card
 {
     protected BaseCard $card;
+
+    protected int $secondsToCache = 0;
 
     protected Carbon $comparedDate;
 
@@ -50,6 +53,18 @@ class Card
     ): static {
         /** @phpstan-ignore-next-line */
         return new static($query, $start, $end, $chartPeriod);
+    }
+
+    /**
+     * Cache the result of the queries for the given amount of seconds.
+     *
+     * @return $this
+     */
+    public function cache(int $seconds): static
+    {
+        $this->secondsToCache = $seconds;
+
+        return $this;
     }
 
     /**
@@ -104,6 +119,7 @@ class Card
 
     protected function generate(string $method, string $column, ?string $label = null, ?callable $displaceValue = null): BaseCard
     {
+        // Automatically set the label if none is provided.
         if ($column === '*') {
             $class = new ReflectionClass($this->query->getModel());
             $label ??= __(ucfirst($method).' '.ucfirst($class->getShortName()));
@@ -111,27 +127,41 @@ class Card
             $label ??= __(ucfirst($method).' '.ucfirst($column));
         }
 
-        $oldValue = $this
+        // Calculate old value
+        $oldValueQuery = $this
             ->query
+            ->clone()
             ->where('created_at', '>=', $this->comparedDate)
-            ->where('created_at', '<', $this->start)
-            ->$method($column);
+            ->where('created_at', '<', $this->start);
+        $oldValue = CacheManager::rememberByQuery($oldValueQuery, $method, $this->secondsToCache, function () use ($oldValueQuery, $method, $column) {
+            return $oldValueQuery->$method($column);
+        });
 
-        $newValue = $this
+        // Calculate new value
+        $newValueQuery = $this
             ->query
+            ->clone()
             ->where('created_at', '>=', $this->start)
-            ->where('created_at', '<=', $this->end)
-            ->$method($column);
+            ->where('created_at', '<=', $this->end);
+        $newValue = CacheManager::rememberByQuery($newValueQuery, $method, $this->secondsToCache, function () use ($newValueQuery, $method, $column) {
+            return $newValueQuery->$method($column);
+        });
 
+        // Calculate trend
         $per = 'per'.ucfirst($this->chartPeriod);
-        $chart = Trend::query($this->query)
+        $chart = CacheManager::rememberByQuery($this->query, "trend-{$method}-{$per}", $this->secondsToCache, function () use ($method, $column, $per) {
+            return Trend::query($this->query)
             ->between($this->start, $this->end)
             ->$per()
-            ->$method($column);
+            ->$method($column)
+            ->map
+            ->aggregate
+            ->toArray();
+        });
 
+        // Create card
         $card = BaseCard::make($label, value($displaceValue ?? $newValue, $newValue))
             ->chart($chart);
-
         $this->addDescriptionWithTrendingToCard($card, $oldValue, $newValue);
 
         return $card;
