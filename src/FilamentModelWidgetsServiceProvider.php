@@ -16,6 +16,12 @@ class FilamentModelWidgetsServiceProvider extends PluginServiceProvider
          */
         $package
             ->name('filament-model-widgets')
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasConfigFile();
+    }
+
+    public function packageRegistered(): void
+    {
+        $this->app->bind(CacheManager::class, fn () => new CacheManager());
     }
 }
