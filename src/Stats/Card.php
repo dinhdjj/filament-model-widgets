@@ -133,9 +133,10 @@ class Card
             ->clone()
             ->where('created_at', '>=', $this->comparedDate)
             ->where('created_at', '<', $this->start);
+
         $oldValue = CacheManager::rememberByQuery($oldValueQuery, $method, $this->secondsToCache, function () use ($oldValueQuery, $method, $column) {
             return $oldValueQuery->$method($column);
-        });
+        }) ?? 0;
 
         // Calculate new value
         $newValueQuery = $this
@@ -145,7 +146,7 @@ class Card
             ->where('created_at', '<=', $this->end);
         $newValue = CacheManager::rememberByQuery($newValueQuery, $method, $this->secondsToCache, function () use ($newValueQuery, $method, $column) {
             return $newValueQuery->$method($column);
-        });
+        }) ?? 0;
 
         // Calculate trend
         $per = 'per'.ucfirst($this->chartPeriod);
