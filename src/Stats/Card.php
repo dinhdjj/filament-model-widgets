@@ -134,9 +134,9 @@ class Card
             ->where('created_at', '>=', $this->comparedDate)
             ->where('created_at', '<', $this->start);
 
-        $oldValue = CacheManager::rememberByQuery($oldValueQuery, $method, $this->secondsToCache, function () use ($oldValueQuery, $method, $column) {
+        $oldValue = (float) CacheManager::rememberByQuery($oldValueQuery, $method, $this->secondsToCache, function () use ($oldValueQuery, $method, $column) {
             return $oldValueQuery->$method($column);
-        }) ?? 0;
+        });
 
         // Calculate new value
         $newValueQuery = $this
@@ -144,9 +144,9 @@ class Card
             ->clone()
             ->where('created_at', '>=', $this->start)
             ->where('created_at', '<=', $this->end);
-        $newValue = CacheManager::rememberByQuery($newValueQuery, $method, $this->secondsToCache, function () use ($newValueQuery, $method, $column) {
+        $newValue = (float) CacheManager::rememberByQuery($newValueQuery, $method, $this->secondsToCache, function () use ($newValueQuery, $method, $column) {
             return $newValueQuery->$method($column);
-        }) ?? 0;
+        });
 
         // Calculate trend
         $per = 'per'.ucfirst($this->chartPeriod);
@@ -161,7 +161,7 @@ class Card
         });
 
         // Create card'
-        $defaultValue = is_float($newValue) ? number_format($newValue, 1) : number_format($newValue, 0);
+        $defaultValue = rtrim(number_format($newValue, 1), '0.');
         $card = BaseCard::make($label, value($displaceValue ?? $defaultValue, $newValue))
             ->chart($chart);
         $this->addDescriptionWithTrendingToCard($card, $oldValue, $newValue);
