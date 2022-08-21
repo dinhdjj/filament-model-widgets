@@ -161,7 +161,7 @@ class Card
         });
 
         // Create card'
-        $defaultValue = rtrim(number_format($newValue, 1), '0.');
+        $defaultValue = rtrim(rtrim(number_format($newValue, 1), '0'), '.');
         $card = BaseCard::make($label, value($displaceValue ?? $defaultValue, $newValue))
             ->chart($chart);
         $this->addDescriptionWithTrendingToCard($card, $oldValue, $newValue);
