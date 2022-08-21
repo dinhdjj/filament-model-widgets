@@ -60,7 +60,7 @@ class Card
      *
      * @return $this
      */
-    public function cache(int $seconds): static
+    public function cache(int $seconds = 300): static
     {
         $this->secondsToCache = $seconds;
 
@@ -159,8 +159,9 @@ class Card
             ->toArray();
         });
 
-        // Create card
-        $card = BaseCard::make($label, value($displaceValue ?? $newValue, $newValue))
+        // Create card'
+        $defaultValue = is_float($newValue) ? number_format($newValue, 1) : number_format($newValue, 0);
+        $card = BaseCard::make($label, value($displaceValue ?? $defaultValue, $newValue))
             ->chart($chart);
         $this->addDescriptionWithTrendingToCard($card, $oldValue, $newValue);
 
@@ -174,12 +175,12 @@ class Card
 
             if ($newValue > $oldValue) {
                 $percentageIncrease = $percentage - 100;
-                $card->description(__(':percentage% increase', ['percentage' => number_format($percentageIncrease)]))
+                $card->description(__(':percentage% increase', ['percentage' => number_format($percentageIncrease, 1)]))
                     ->descriptionIcon('heroicon-o-trending-up')
                     ->color('success');
             } elseif ($newValue < $oldValue) {
                 $percentageDecrease = 100 - $percentage;
-                $card->description(__(':percentage% decrease', ['percentage' => number_format($percentageDecrease)]))
+                $card->description(__(':percentage% decrease', ['percentage' => number_format($percentageDecrease, 1)]))
                     ->descriptionIcon('heroicon-o-trending-down')
                     ->color('danger');
             }
